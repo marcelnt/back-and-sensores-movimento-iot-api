@@ -101,11 +101,11 @@ app.post('/v2/iot/led', cors(), bodyParserJSON, async function(request, response
     let dadosBody = request.body;
 
 
-    if(dadosBody.comando = 'ligar')
+    if(dadosBody.comando == 'ligar')
         client.publish('senai/sala/led', 'ligar')
-    else if(dadosBody.comando = 'desligar')
+    else if(dadosBody.comando == 'desligar')
         client.publish('senai/sala/led', 'desligar')
-    
+
     //Encaminha os dados para o controller enviar para o DAO
     //let resultDadosNovoFilme = await controllerFilmes.setInserirNovoLivro(dadosBody, contentType);
 
