@@ -14,6 +14,12 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+//Servidor de mensageria
+const mqtt = require('mqtt')
+const client  = mqtt.connect('mqtt://broker.hivemq.com')
+
+
+
 //Cria um objeto app tendo como referencia a classe do express
 const app = express();
 
@@ -86,6 +92,26 @@ app.post('/v1/iot/sensores', cors(), bodyParserJSON, async function(request, res
     response.json(resultDadosNovoFilme);
 });
 
+app.post('/v2/iot/led', cors(), bodyParserJSON, async function(request, response){
+
+    //Recebe o content-type com o tipo de dados encaminhado na requisição
+    let contentType = request.headers['content-type'];
+
+    //Recebe todos os dados encaminhados na requisição pelo body
+    let dadosBody = request.body;
+
+
+    if(dadosBody.comando = 'ligar')
+        client.publish('senai/sala/led', 'ligar')
+    else if(dadosBody.comando = 'desligar')
+        client.publish('senai/sala/led', 'desligar')
+    
+    //Encaminha os dados para o controller enviar para o DAO
+    //let resultDadosNovoFilme = await controllerFilmes.setInserirNovoLivro(dadosBody, contentType);
+
+    response.status(200);
+    response.json({'message': 'Comando enviado com sucesso'});
+});
 
 app.delete('/v1/iot/sensores/:id', cors(), async function(request, response){
 
